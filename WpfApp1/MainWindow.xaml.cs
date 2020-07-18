@@ -89,7 +89,7 @@ namespace WpfApp1
             WebClient myWebClient = new WebClient();
             string url = "https://bdu.fstec.ru/files/documents/thrlist.xlsx";
 
-            myWebClient.DownloadFile(url, "thrlist1.xlsx");
+            myWebClient.DownloadFile(url, "test.xlsx");
         }
         private static void getExcelFile()
         {
