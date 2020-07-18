@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,6 +28,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,7 +37,11 @@ namespace WpfApp1
         private static BindingList<SuperShrek> eldata;
         private void button_Click(object sender, RoutedEventArgs e)
         {
-
+            try { getWebFile(); getExcelFile(); }
+            catch (Exception k)
+            {
+                MessageBox.Show(k.Message, "Oh shit, I'm sorry", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -55,11 +63,17 @@ namespace WpfApp1
             try { getExcelFile(); }
             catch(Exception)
             {
-                MessageBoxResult result = MessageBox.Show("Не удалось открыть файл C:/thrlist.xlsx. Загрузить из интернета?", "Oh shit, I'm sorry", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                MessageBoxResult result = MessageBox.Show($"Не удалось открыть файл {Directory.GetCurrentDirectory() + @"\thrlist.xlsx"}. Загрузить из интернета?", "Oh shit, I'm sorry", MessageBoxButton.YesNo, MessageBoxImage.Error);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
-                        parseHtml();
+                        try { 
+                            getWebFile(); 
+                            getExcelFile(); 
+                        } catch(Exception k)
+                        {
+                            MessageBox.Show(k.Message, "Oh shit, I'm sorry", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                         break;
                     case MessageBoxResult.No:
 
@@ -69,16 +83,21 @@ namespace WpfApp1
 
         }
 
-        private static void parseHtml()
-        {
 
+        private static void getWebFile()
+        {
+            WebClient myWebClient = new WebClient();
+            string url = "https://bdu.fstec.ru/files/documents/thrlist.xlsx";
+
+            myWebClient.DownloadFile(url, "thrlist1.xlsx");
         }
         private static void getExcelFile()
         {
 
             //Create COM Objects. Create a COM object for everything that is referenced
             Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(@"s:\thrlist.xlsx");
+
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(Directory.GetCurrentDirectory()+ @"\thrlist.xlsx");
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
 

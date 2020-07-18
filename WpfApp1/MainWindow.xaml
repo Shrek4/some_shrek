@@ -32,7 +32,7 @@
                         <DataGridCheckBoxColumn Header="НД" Width="*" Binding="{Binding Path=Nd}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Button x:Name="button1" Content="Сохранить на ЖД" HorizontalAlignment="Left" Margin="401,0,0,0" VerticalAlignment="Top" Width="126" Height="52" Click="button1_Click"/>
+                <Button x:Name="button1" Content="Сохранить на ЖД" HorizontalAlignment="Left" Margin="401,0,0,0" VerticalAlignment="Top" Width="126" Height="52" Click="button1_Click" IsEnabled="False"/>
 
             </Grid>
         </ScrollViewer>
